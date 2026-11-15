@@ -1,4 +1,4 @@
-# Meet GH Introductions (agency website)
+# Youthfull (agency website)
 
 Standalone static site. Deploy this folder as its own Vercel/Netlify project (it does not touch the Meet GH app).
 
