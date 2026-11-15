@@ -22,6 +22,13 @@
   $$('[data-email]').forEach((el) => {
     if (C.EMAIL) { el.href = 'mailto:' + C.EMAIL; el.textContent = C.EMAIL; } else el.remove();
   });
+  // Gentle fade-in on scroll
+  document.documentElement.classList.add('js');
+  const rv = $$('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15 });
+    rv.forEach((el) => io.observe(el));
+  } else rv.forEach((el) => el.classList.add('in'));
   const yr = $('#year'); if (yr) yr.textContent = new Date().getFullYear();
 
   // ---------- Application form ----------
