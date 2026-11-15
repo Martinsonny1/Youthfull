@@ -1,4 +1,4 @@
--- Meet GH Introductions: applications table.
+-- Youthfull: applications table.
 -- Run ONCE in Supabase > SQL Editor, in the same project as the Meet GH app.
 -- Requires public.is_admin() from the main schema.sql (already in your project).
 -- Safe to re-run.
