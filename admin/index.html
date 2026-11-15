@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · Meet GH Introductions</title>
+<style>
+:root{--wine:#250612;--ruby:#b81749;--gold:#f4c86c;--ink:#2a0f19;--muted:#6f5560;--line:#e6d6dc;--bg:#faf3f0}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--wine);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+header b{letter-spacing:.08em}
+button,select,input,textarea{font:inherit}
+.btn{border:0;border-radius:10px;padding:9px 14px;background:var(--ruby);color:#fff;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block}
+.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.wa{background:#1fa855}
+.login{max-width:380px;margin:12vh auto;background:#fff;padding:30px;border-radius:18px;border:1px solid var(--line)}
+.login input{width:100%;padding:11px;margin:6px 0 14px;border:1px solid var(--line);border-radius:10px}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.stat b{display:block;font-size:26px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.bar input,.bar select{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}.bar input{flex:1;min-width:180px}
+.app{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:12px}
+.app h3{margin:0 0 4px;font-size:17px}
+.meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;background:#f3e3e8;color:var(--ruby);margin-right:6px}
+.tag.man{background:#e6eef9;color:#1d4f91}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;margin-top:10px}
+.row textarea{flex:1;min-width:200px;padding:8px;border:1px solid var(--line);border-radius:10px;min-height:44px}
+.err{color:#b3123c;font-weight:700}.muted{color:var(--muted)}
+</style></head><body>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="../js/config.js"></script>
+<script>
+(function(){
+'use strict';
+const C = window.AGENCY, root = document.getElementById('root');
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sb = window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY);
+const STATUSES = ['new','contacted','verifying','approved','introduced','rejected'];
+let rows = [], filter = {q:'',status:'',role:''};
+
+function login(msg){
+  root.innerHTML = `<form class="login" id="lf"><h2 style="margin-top:0">Admin sign in</h2>
+  <label>Email<input type="email" id="em" required></label><label>Password<input type="password" id="pw" required></label>
+  <p class="err">${esc(msg||'')}</p><button class="btn" style="width:100%">Sign in</button>
+  <p class="muted" style="font-size:13px">Use your existing Meet GH admin account.</p></form>`;
+  document.getElementById('lf').onsubmit = async e => {
+    e.preventDefault();
+    const {error} = await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});
+    if (error) return login(error.message);
+    boot();
+  };
+}
+
+async function boot(){
+  const {data:{session}} = await sb.auth.getSession();
+  if (!session) return login();
+  const {data:ok, error} = await sb.rpc('is_admin');
+  if (error || !ok) { await sb.auth.signOut(); return login('This account is not an approved admin.'); }
+  await load();
+}
+
+async function load(){
+  const {data, error} = await sb.from('applications').select('*').order('created_at',{ascending:false});
+  if (error) { root.innerHTML = `<div class="wrap"><p class="err">Could not load applications: ${esc(error.message)}. Have you run supabase/agency_schema.sql?</p></div>`; return; }
+  rows = data; render();
+}
+
+const age = d => { const b=new Date(d),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n.getMonth()<b.getMonth()||(n.getMonth()==b.getMonth()&&n.getDate()<b.getDate()))a--;return a; };
+
+function render(){
+  const list = rows.filter(r =>
+    (!filter.status||r.status===filter.status)&&(!filter.role||r.role===filter.role)&&
+    (!filter.q||[r.full_name,r.phone,r.city,r.about,r.email].join(' ').toLowerCase().includes(filter.q.toLowerCase())));
+  const count = s => rows.filter(r=>r.status===s).length;
+  root.innerHTML = `<header><b>MEET GH INTRODUCTIONS · ADMIN</b><span><button class="btn alt" id="rf">Refresh</button> <button class="btn alt" id="so">Sign out</button></span></header>
+  <div class="wrap">
+  <div class="stats"><div class="stat"><b>${rows.length}</b>Total</div><div class="stat"><b>${rows.filter(r=>r.role==='woman').length}</b>Women</div><div class="stat"><b>${rows.filter(r=>r.role==='man').length}</b>Men</div><div class="stat"><b>${count('new')}</b>New</div><div class="stat"><b>${count('approved')}</b>Approved</div></div>
+  <div class="bar"><input id="q" placeholder="Search name, phone, city…" value="${esc(filter.q)}">
+  <select id="fs"><option value="">All statuses</option>${STATUSES.map(s=>`<option ${filter.status===s?'selected':''}>${s}</option>`).join('')}</select>
+  <select id="fr"><option value="">Women &amp; men</option><option value="woman" ${filter.role==='woman'?'selected':''}>Women</option><option value="man" ${filter.role==='man'?'selected':''}>Men</option></select>
+  <button class="btn alt" id="csv">Export CSV</button></div>
+  ${list.length?list.map(card).join(''):'<p class="muted">No applications match.</p>'}</div>`;
+  q.oninput = e => { filter.q = e.target.value; const p=e.target.selectionStart; render(); const n=document.getElementById('q'); n.focus(); n.setSelectionRange(p,p); };
+  fs.onchange = e => { filter.status=e.target.value; render(); };
+  fr.onchange = e => { filter.role=e.target.value; render(); };
+  rf.onclick = load; so.onclick = async()=>{await sb.auth.signOut();login();};
+  csv.onclick = exportCsv;
+  document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>save(b.dataset.save));
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>del(b.dataset.del));
+}
+
+function card(r){
+  const wa = `https://wa.me/${r.phone}?text=${encodeURIComponent('Hello '+r.full_name.split(' ')[0]+', this is Meet GH Introductions. Thank you for applying.')}`;
+  return `<div class="app"><h3>${esc(r.full_name)} <span class="tag ${r.role}">${r.role}</span><span class="tag">${esc(r.status)}</span></h3>
+  <div class="meta">${age(r.dob)} yrs (born ${esc(r.dob)}) · ${esc(r.city)} · ${esc(r.phone)}${r.email?' · '+esc(r.email):''} · applied ${new Date(r.created_at).toLocaleString()}</div>
+  <div><b>Looking for:</b> ${esc(r.goal||'-')}${r.role==='woman'&&r.partner_age_min?` · partner age ${r.partner_age_min}–${r.partner_age_max||'?'}`:''}${r.occupation?` · <b>Work:</b> ${esc(r.occupation)}`:''}${r.heard_from?` · <span class="muted">via ${esc(r.heard_from)}</span>`:''}</div>
+  <p style="margin:8px 0 0">${esc(r.about)}</p>
+  <div class="row"><select id="st-${r.id}">${STATUSES.map(s=>`<option ${r.status===s?'selected':''}>${s}</option>`).join('')}</select>
+  <textarea id="nt-${r.id}" placeholder="Private notes (verification, preferences…)">${esc(r.notes||'')}</textarea>
+  <button class="btn" data-save="${r.id}">Save</button><a class="btn wa" target="_blank" rel="noopener" href="${wa}">WhatsApp</a><button class="btn alt" data-del="${r.id}">Delete</button></div></div>`;
+}
+
+async function save(id){
+  const {error} = await sb.from('applications').update({status:document.getElementById('st-'+id).value,notes:document.getElementById('nt-'+id).value||null}).eq('id',id);
+  if (error) return alert('Could not save: '+error.message);
+  await load();
+}
+async function del(id){
+  if (!confirm('Permanently delete this application?')) return;
+  const {error} = await sb.from('applications').delete().eq('id',id);
+  if (error) return alert(error.message); await load();
+}
+function exportCsv(){
+  const cols=['created_at','role','full_name','phone','email','dob','city','goal','partner_age_min','partner_age_max','occupation','about','heard_from','status','notes'];
+  const cell=v=>{v=v==null?'':String(v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';};
+  const out=[cols.join(',')].concat(rows.map(r=>cols.map(c=>cell(r[c])).join(','))).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/csv'}));a.download='applications.csv';a.click();
+}
+boot();
+})();
+</script></body></html>
