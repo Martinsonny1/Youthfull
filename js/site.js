@@ -4,7 +4,7 @@
   const C = window.AGENCY || {};
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
-  const wa = (text) => `https://wa.me/${C.WHATSAPP}?text=${encodeURIComponent(text || 'Hello, I would like to know more about Meet GH Introductions.')}`;
+  const wa = (text) => `https://wa.me/${C.WHATSAPP}?text=${encodeURIComponent(text || 'Hello, I would like to know more about Youthfull.')}`;
 
   // Mobile menu
   const mb = $('.menu-btn'), nav = $('.nav');
@@ -107,7 +107,7 @@
     form.style.display = 'none';
     const done = $('#done'); done.classList.add('show');
     const first = rec.full_name.split(' ')[0] || 'there';
-    const msg = `Hello, this is ${rec.full_name}. I just applied on Meet GH Introductions as a ${role === 'woman' ? 'woman' : 'man'} in ${rec.city}.`;
+    const msg = `Hello, this is ${rec.full_name}. I just applied on Youthfull as a ${role === 'woman' ? 'woman' : 'man'} in ${rec.city}.`;
     $('#done-wa').href = wa(msg);
     if (saved) {
       $('#done-title').textContent = `Thank you, ${first}.`;

@@ -1,6 +1,6 @@
-// Meet GH Introductions: the settings you are most likely to change.
+// Youthfull: the settings you are most likely to change.
 window.AGENCY = {
-  BRAND: 'Meet GH Introductions',
+  BRAND: 'Youthfull',
   // International format, digits only (0256250046 -> 233256250046)
   WHATSAPP: '233256250046',
   EMAIL: '',                       // optional, shown in the footer if filled in
