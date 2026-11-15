@@ -40,15 +40,12 @@
       el.style.display = on ? '' : 'none';
       $$('input,select,textarea', el).forEach((i) => (i.disabled = !on));
     });
-    $('#dob-hint').textContent = r === 'woman'
-      ? `Women must be ${C.WOMAN_MIN_AGE} or older.`
-      : `Men must be between ${C.MAN_MIN_AGE} and ${C.MAN_MAX_AGE}.`;
-    $('#form-title').textContent = r === 'woman' ? 'Tell us about you' : 'Tell us about you';
+    $('#dob-hint').textContent = `You must be ${C.WOMAN_MIN_AGE} or older.`;
     hideErr();
   };
   tabs.forEach((t) => t.addEventListener('click', () => setRole(t.dataset.role)));
   const q = new URLSearchParams(location.search).get('role');
-  setRole(q === 'man' ? 'man' : 'woman');
+  setRole('woman');
 
   const ageOf = (iso) => {
     const d = new Date(iso + 'T00:00:00'); if (isNaN(d)) return null;
@@ -69,8 +66,7 @@
     if (f.get('website')) return; // honeypot
     const dob = f.get('dob'), age = ageOf(dob);
     if (age === null) return showErr('Please enter your date of birth.');
-    if (role === 'woman' && age < C.WOMAN_MIN_AGE) return showErr(`Sorry, our women's introductions are for ages ${C.WOMAN_MIN_AGE} and above.`);
-    if (role === 'man' && (age < C.MAN_MIN_AGE || age > C.MAN_MAX_AGE)) return showErr(`Sorry, our men's introductions are for ages ${C.MAN_MIN_AGE} to ${C.MAN_MAX_AGE}.`);
+    if (role === 'woman' && age < C.WOMAN_MIN_AGE) return showErr(`Sorry, this service is for women aged ${C.WOMAN_MIN_AGE} and above.`);
     const phone = normPhone(f.get('phone'));
     if (phone.length < 11 || phone.length > 15) return showErr('Please enter a valid WhatsApp number, for example 024 123 4567.');
     if (!f.get('consent')) return showErr('Please tick the box to confirm and consent.');
@@ -101,14 +97,14 @@
       saved = r.ok;
     } catch (_) { saved = false; }
 
-    form.style.display = 'none'; $('.tabs').style.display = 'none';
+    form.style.display = 'none';
     const done = $('#done'); done.classList.add('show');
     const first = rec.full_name.split(' ')[0] || 'there';
     const msg = `Hello, this is ${rec.full_name}. I just applied on Meet GH Introductions as a ${role === 'woman' ? 'woman' : 'man'} in ${rec.city}.`;
     $('#done-wa').href = wa(msg);
     if (saved) {
       $('#done-title').textContent = `Thank you, ${first}.`;
-      $('#done-text').textContent = 'Your application has been received. A member of our team will message you on WhatsApp, usually within 48 hours, to say hello and talk you through verification.';
+      $('#done-text').textContent = 'Your application has been received. A member of our team will message you on WhatsApp, usually within 48 hours, to say hello and talk about the kind of man you\'d like to meet.';
     } else {
       $('#done-title').textContent = 'One more step, please';
       $('#done-text').textContent = 'We could not send your form just now. Please tap the WhatsApp button below. Your details are filled in, so just press send.';
