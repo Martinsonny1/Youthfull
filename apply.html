@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#250612">
+<title>Apply · Meet GH Introductions</title>
+<meta name="description" content="Apply privately for an introduction. Women 35+ and men 21 to 34. Free to apply.">
+<meta property="og:title" content="Apply · Meet GH Introductions"><meta property="og:description" content="Apply privately for an introduction. Women 35+ and men 21 to 34. Free to apply."><meta property="og:image" content="images/meet-gh-og.jpg"><meta property="og:type" content="website">
+<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap">
+<link rel="stylesheet" href="css/site.css">
+</head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="index.html"><span class="brand-mark">♥</span><span data-brand>Meet GH Introductions</span></a>
+<button class="menu-btn" aria-label="Menu" aria-expanded="false">Menu</button>
+<nav class="nav"><a href="index.html#how">How it works</a><a href="index.html#who">Who it's for</a><a href="safety.html">Safety</a><a href="index.html#faq">FAQ</a><a class="btn btn-gold btn-sm" href="apply.html">Apply</a></nav>
+</div></header>
+
+<div class="page-head"><div class="wrap"><div class="eyebrow" style="color:var(--gold)">Apply</div><h1>Your private application</h1><p>About five minutes. Only our verification team will read it.</p></div></div>
+<main class="apply"><div class="wrap">
+<div>
+<div class="tabs" role="tablist">
+<button type="button" class="tab" role="tab" data-role="woman" aria-selected="true">I'm a woman<small>Aged <span data-woman-min>35</span> or older</small></button>
+<button type="button" class="tab" role="tab" data-role="man" aria-selected="false">I'm a man<small>Aged <span data-man-min>21</span> to <span data-man-max>34</span></small></button>
+</div>
+<form class="box" id="apply-form" novalidate>
+<h2 id="form-title" style="font-size:30px;margin-bottom:22px">Tell us about you</h2>
+<div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<div class="field"><label for="full_name">Full name</label><input id="full_name" name="full_name" required autocomplete="name"></div>
+<div class="row2">
+<div class="field"><label for="phone">WhatsApp number</label><input id="phone" name="phone" type="tel" required placeholder="024 123 4567" autocomplete="tel"></div>
+<div class="field"><label for="email">Email <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input id="email" name="email" type="email" autocomplete="email"></div>
+</div>
+<div class="row2">
+<div class="field"><label for="dob">Date of birth</label><input id="dob" name="dob" type="date" required><div class="hint" id="dob-hint"></div></div>
+<div class="field"><label for="city">City / area</label><input id="city" name="city" required placeholder="e.g. East Legon, Accra"></div>
+</div>
+<div class="field"><label for="goal">What are you looking for?</label>
+<select id="goal" name="goal" required><option value="">Choose one</option><option>Companionship and good company</option><option>A serious relationship</option><option>Marriage</option><option>Open to see where it goes</option></select></div>
+<div class="row2" data-only="woman">
+<div class="field"><label for="pmin">Preferred partner age: from</label><input id="pmin" name="partner_age_min" type="number" min="21" max="34" placeholder="21"></div>
+<div class="field"><label for="pmax">to</label><input id="pmax" name="partner_age_max" type="number" min="21" max="34" placeholder="34"></div>
+</div>
+<div class="field" data-only="man"><label for="occupation">What do you do? <span style="font-weight:400;color:var(--muted)">(work or studies)</span></label><input id="occupation" name="occupation"></div>
+<div class="field"><label for="about">About you, and the kind of person you'd like to meet</label><textarea id="about" name="about" required placeholder="Your personality, interests, values, and what matters most to you."></textarea><div class="hint">No photos needed now. We'll ask for them privately on WhatsApp.</div></div>
+<div class="field"><label for="heard">How did you hear about us?</label><select id="heard" name="heard_from"><option value="">Choose one</option><option>WhatsApp group</option><option>Facebook</option><option>Instagram</option><option>TikTok</option><option>A friend</option><option>Meet GH app</option><option>Other</option></select></div>
+<label class="consent"><input type="checkbox" name="consent"><span>I confirm the details above are true and that I am the age I stated. I agree to Meet GH Introductions contacting me on WhatsApp and processing my information to verify me and arrange introductions, as described in the <a href="privacy.html" target="_blank">Privacy Policy</a> and <a href="terms.html" target="_blank">Terms</a>.</span></label>
+<p class="err" id="form-err" role="alert"></p>
+<button class="btn btn-ruby" type="submit" style="width:100%">Send my application</button>
+</form>
+<div class="card done" id="done"><div class="tick">✓</div><h2 id="done-title" style="font-size:36px;margin-bottom:12px"></h2><p id="done-text" style="color:var(--muted);max-width:480px;margin:0 auto 24px"></p><a class="btn btn-wa" id="done-wa" href="#" target="_blank" rel="noopener">Message us on WhatsApp</a></div>
+</div>
+<aside class="side">
+<div class="card"><h3>What happens next</h3><p>We message you on WhatsApp, usually within 48 hours, to say hello and explain verification. Nothing is shared without your consent.</p></div>
+<div class="card"><h3>Never pay a stranger</h3><p>We will never ask you to send money to a member. If anyone does, tell us immediately.</p></div>
+<div class="card"><h3>Prefer to talk?</h3><p><a data-wa="Hello, I'd like to talk before applying." href="#" style="color:var(--ruby);font-weight:700">Chat with us on WhatsApp</a></p></div>
+</aside>
+</div></main>
+<footer><div class="wrap">
+<div class="cols">
+<div><div class="brand" style="margin-bottom:14px"><span class="brand-mark">♥</span><span data-brand>Meet GH Introductions</span></div>
+<p>A private introduction service in Ghana for women aged <span data-woman-min>35</span>+ who want to meet younger men, 18+ verified, with respect and safety first.</p></div>
+<div><h4>Explore</h4><a href="apply.html">Apply</a><a href="safety.html">Safety &amp; verification</a><a href="index.html#faq">FAQ</a></div>
+<div><h4>Contact</h4><a data-wa="Hello, I have a question about Meet GH Introductions." href="#">WhatsApp us</a><a data-email href="#"></a><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms</a></div>
+</div>
+<div class="fine">© <span id="year"></span> <span data-brand>Meet GH Introductions</span>. For adults only. We are an introduction service; we do not guarantee any match or relationship.</div>
+</div></footer>
+<a class="wa-float" data-wa="Hello, I would like to know more about Meet GH Introductions." href="#" aria-label="Chat on WhatsApp">💬 <span>Chat on WhatsApp</span></a>
+<script src="js/config.js"></script><script src="js/site.js"></script>
+</body></html>
