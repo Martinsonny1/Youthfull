@@ -1,4 +1,4 @@
-# Image prompts for Meet GH Introductions
+# Image prompts for Youthfull
 
 Generate each image, save it with the EXACT filename into this `images/` folder (JPG), and re-upload.
 Until a file exists, the site shows a warm gradient in its place, so nothing breaks.
