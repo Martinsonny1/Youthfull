@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Admin · Meet GH Introductions</title>
+<title>Admin · Youthfull</title>
 <style>
 :root{--wine:#250612;--ruby:#b81749;--gold:#f4c86c;--ink:#2a0f19;--muted:#6f5560;--line:#e6d6dc;--bg:#faf3f0}
 *{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -73,7 +73,7 @@ function render(){
     (!filter.status||r.status===filter.status)&&(!filter.role||r.role===filter.role)&&
     (!filter.q||[r.full_name,r.phone,r.city,r.about,r.email].join(' ').toLowerCase().includes(filter.q.toLowerCase())));
   const count = s => rows.filter(r=>r.status===s).length;
-  root.innerHTML = `<header><b>MEET GH INTRODUCTIONS · ADMIN</b><span><button class="btn alt" id="rf">Refresh</button> <button class="btn alt" id="so">Sign out</button></span></header>
+  root.innerHTML = `<header><b>YOUTHFULL · ADMIN</b><span><button class="btn alt" id="rf">Refresh</button> <button class="btn alt" id="so">Sign out</button></span></header>
   <div class="wrap">
   <div class="stats"><div class="stat"><b>${rows.length}</b>Total</div><div class="stat"><b>${rows.filter(r=>r.role==='woman').length}</b>Women</div><div class="stat"><b>${rows.filter(r=>r.role==='man').length}</b>Men</div><div class="stat"><b>${count('new')}</b>New</div><div class="stat"><b>${count('approved')}</b>Approved</div></div>
   <div class="bar"><input id="q" placeholder="Search name, phone, city…" value="${esc(filter.q)}">
@@ -91,7 +91,7 @@ function render(){
 }
 
 function card(r){
-  const wa = `https://wa.me/${r.phone}?text=${encodeURIComponent('Hello '+r.full_name.split(' ')[0]+', this is Meet GH Introductions. Thank you for applying.')}`;
+  const wa = `https://wa.me/${r.phone}?text=${encodeURIComponent('Hello '+r.full_name.split(' ')[0]+', this is Youthfull. Thank you for applying.')}`;
   return `<div class="app"><h3>${esc(r.full_name)} <span class="tag ${r.role}">${r.role}</span><span class="tag">${esc(r.status)}</span></h3>
   <div class="meta">${age(r.dob)} yrs (born ${esc(r.dob)}) · ${esc(r.city)} · ${esc(r.phone)}${r.email?' · '+esc(r.email):''} · applied ${new Date(r.created_at).toLocaleString()}</div>
   <div><b>Looking for:</b> ${esc(r.goal||'-')}${r.role==='woman'&&r.partner_age_min?` · partner age ${r.partner_age_min}–${r.partner_age_max||'?'}`:''}${r.occupation?` · <b>Work:</b> ${esc(r.occupation)}`:''}${r.heard_from?` · <span class="muted">via ${esc(r.heard_from)}</span>`:''}</div>
