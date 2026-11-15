@@ -6,7 +6,7 @@
 create table if not exists public.applications (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
-  role text not null check (role in ('woman','man')),
+  role text not null check (role = 'woman'),
   full_name text not null check (char_length(full_name) between 2 and 120),
   phone text not null check (phone ~ '^[0-9]{11,15}$'),
   email text check (email is null or char_length(email) <= 160),
@@ -33,7 +33,6 @@ language plpgsql as $$
 declare a int := extract(year from age(current_date, new.dob));
 begin
   if new.role = 'woman' and a < 35 then raise exception 'age_rule_woman'; end if;
-  if new.role = 'man' and (a < 21 or a > 34) then raise exception 'age_rule_man'; end if;
   if tg_op = 'INSERT' then
     new.status := 'new'; new.notes := null;   -- applicants cannot set these
   end if;
